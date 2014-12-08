@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 import javax.swing.*;
 
 public class Reversi {
@@ -48,6 +49,52 @@ public class Reversi {
 		returnMe[0] = i / 8;
 		returnMe[1] = i % 8;
 		return returnMe;
+	}
+	
+	public ArrayList<int[]> findAllLegalMoves(int color){
+		List<int[]> allMovableSpaces = findAllMovableSpaces();
+		/*Find all elements that need removed because they are a movable space but not
+		 * a legal move for this color.
+		 */
+		List<int[]> returnMe = new ArrayList<int[]>();
+		
+		for(int i = 0; i < allMovableSpaces.size(); i++){
+			if(isLegalMove(color, allMovableSpaces.get(i))){
+				returnMe.add(allMovableSpaces.get(i));
+			}
+		}
+		
+		return returnMe;
+	}
+	
+	/*Flood fills from position (3,3) to find all spaces where a legal move could even happen*/
+	public List<int[]> findAllMovableSpaces(){
+		int[] initPos = {3,3};
+		int[] nextPos = new int[2];
+		
+		List<int[]> returnMe = new ArrayList<int[]>();
+		for(int i; i < 8; i ++){
+			nextPos = getNextPos(nextPos, i);
+			returnMe.addAll(findAllMovableSpacesHelper(i,initPos));
+		}
+		return returnMe;
+	}
+	
+	/*Helper function for findAllMovableSpaces(). Does the actual flood filling but only in one direction
+	 * Always returns a list of one element or a list of zero
+	 * */
+	public List<int[]> findAllMovableSpacesHelper(int dir, int[] pos){
+		int[] nextPos = getNextPos(pos, dir);
+		List<int[]> returnMe = new ArrayList<int[]>();
+		if(isOffBoard(nextPos));
+			return returnMe;
+			
+		if(Board[rcToOneD(nextPos[0],nextPos[1])] == 0){
+			returnMe.add(nextPos);
+			return returnMe;
+		}
+		
+		findAllMovableSpacesHelper(dir, nextPos);
 	}
 	
 	/*Not sure where we want this function, 
