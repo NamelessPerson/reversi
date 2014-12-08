@@ -1,0 +1,55 @@
+import java.io.*;
+import javax.swing.*;
+
+public class Reversi {
+	
+	/* 0 = unplaced
+	 * 1 = white
+	 * 2 = black
+	 */
+	int[] Board; 
+	Reversi(){
+		JFrame window = new JFrame();
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setVisible(true);
+		
+		Board = new int[64];
+		
+		for(int i = 0; i < 64; i ++)
+			Board[i] = 0;
+		/*Initially white,black, black white*/
+		Board[rcTo1D(3,3)] = 1; //Assign whites
+		Board[rcTo1D(4,4)] = 1;
+		Board[rcTo1D(3,4)] = 2;
+		Board[rcTo1D(4,3)] = 2;
+	}
+	
+	void run(){
+		while(true){
+			
+		}
+	}
+	
+	/*This function takes in a row and a column
+	 * and returns the integer index into the 1D array
+	 * that refers to.
+	 */
+	
+	int rcTo1D(int r, int c)
+	{
+		return 8*r + c;
+	}
+	
+	/*Not sure where we want this function, 
+	 * writing it here, we can move it later.
+	 */
+	/* Takes in a
+	 * 
+	 */
+	boolean isLegalMove()
+	
+	public static void main(String[] args) {
+		Reversi r = new Reversi();
+	}
+
+}
