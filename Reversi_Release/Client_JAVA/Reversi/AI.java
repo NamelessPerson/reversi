@@ -1,9 +1,6 @@
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
 
-public class Reversi {
-	
+public class AI {
+
 	/* 0 = unplaced
 	 * 1 = white
 	 * 2 = black
@@ -71,7 +68,7 @@ public class Reversi {
 	/*Flood fills from position (3,3) to find all spaces where a legal move could even happen*/
 	public ArrayList<int[]> findAllMovableSpaces(int[] B){
 		int[] initPos = {3,3};
-			
+		
 		ArrayList<int[]> returnMe = new ArrayList<int[]>();
 		/*
 		ArrayList<int[]> checkedList = new ArrayList<int[]>();
@@ -88,7 +85,7 @@ public class Reversi {
 				/*Check all neighboring spaces*/
 				for(int k = 0; k < 8; k++){
 					int[] nextPos = new int[2];
-					nextPos = getNextPos(pos, k);
+					nextPos = getNextPos(k, pos);
 					if(!isOffBoard(nextPos)){
 						if(B[rcToOneD(nextPos[0],nextPos[1])] != 0){
 							returnMe.add(nextPos);
@@ -97,8 +94,6 @@ public class Reversi {
 					}
 				}
 			}
-		
-		return returnMe;
 		
 		
 	}
@@ -120,7 +115,7 @@ public class Reversi {
 		
 		for(int i = 0; i < 8; i ++){
 			int[] nextPos = getNextPos(pos, i);
-		
+		 
 		
 			if(isOffBoard(nextPos))
 				continue;
@@ -276,22 +271,9 @@ public class Reversi {
 	public void printMove(int[] m){
 		System.out.println("("+m[0]+","+m[1]+")");
 	}
-	
 	public static void main(String[] args) {
-		Reversi r = new Reversi();
-		r.printBoard(r.Board);
-		System.out.println("Built");
+		// TODO Auto-generated method stub
 
-		
-		ArrayList<int[]> movableSpaces = r.findAllMovableSpaces(r.Board);
-		for(int i = 0; i < movableSpaces.size(); i++)
-			r.printMove(movableSpaces.get(i));
-		
-		ArrayList<int[]> legalMoves = r.findAllLegalMoves(1,r.Board);
-		for(int i = 0; i < legalMoves.size(); i ++){
-			r.printMove(legalMoves.get(i));
-		}
-		
 	}
 
 }
