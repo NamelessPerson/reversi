@@ -1,5 +1,5 @@
+import java.util.*;
 import java.util.ArrayList;
-
 
 public class AI {
 
@@ -7,7 +7,20 @@ public class AI {
 	 * 1 = white
 	 * 2 = black
 	 */
-	int[] Board;
+	int[] Board; 
+    AI(){
+		
+		
+		Board = new int[64];
+		
+		for(int i = 0; i < 64; i ++)
+			Board[i] = 0;
+		/*Initially white,black, black white*/
+		Board[rcToOneD(3,3)] = 1; //Assign whites
+		Board[rcToOneD(4,4)] = 1;
+		Board[rcToOneD(3,4)] = 2; //Assign blacks
+		Board[rcToOneD(4,3)] = 2;
+	}
 	
 	void run(){
 		while(true){
@@ -43,9 +56,16 @@ public class AI {
 		 */
 		ArrayList<int[]> returnMe = new ArrayList<int[]>();
 		
-		for(int i = 0; i < allMovableSpaces.size(); i++){
-			if(isLegalMove(color, allMovableSpaces.get(i),B)){
-				returnMe.add(allMovableSpaces.get(i));
+
+
+		for(int i = 0; i < 8; i++){
+		    for(int j = 0; j < 8; j++){
+			int[] move = new int[2];
+			move[0] = i;
+			move[1] = j;
+			if(isLegalMove(color, move,B)){
+			    returnMe.add(move);
+			}
 			}
 		}
 		
@@ -60,7 +80,6 @@ public class AI {
 		/*
 		ArrayList<int[]> checkedList = new ArrayList<int[]>();
 		returnMe.addAll(findAllMovableSpacesHelper(initPos, B, checkedList));
-
 		return returnMe;*/
 		int[] pos = {0,0};
 		
@@ -74,15 +93,17 @@ public class AI {
 					int[] nextPos = new int[2];
 					nextPos = getNextPos(pos, k);
 					if(!isOffBoard(nextPos)){
-						if(B[rcToOneD(nextPos[0],nextPos[1])] != 0){
-							returnMe.add(nextPos);
+						if(B[rcToOneD(nextPos[0],nextPos[1])] == 0 && 
+								B[rcToOneD(pos[0],pos[1])] != 0){
+							if( !containsMove( returnMe, nextPos ) )
+								returnMe.add(nextPos);
 							continue;
 						}
 					}
 				}
 			}
-		return returnMe;
 		
+		return returnMe;
 		
 	}
 	
@@ -142,10 +163,11 @@ public class AI {
 			
 			/*Skip this direction if we don't detect an opposite color piece*/
 			int nextColor = B[rcToOneD(nextPos[0],nextPos[1])];
-			if(nextColor == 0 || nextColor == color)
-				continue;
-			
-			returnMe = returnMe | isLegalMoveHelper(color, move, i, B);
+			if(nextColor == 0 || nextColor == color){
+			    continue;
+			}
+						
+			returnMe = isLegalMoveHelper(color, nextPos, i, B);
 			if (returnMe = true)
 					return returnMe;
 		}
@@ -159,7 +181,9 @@ public class AI {
 	public boolean isLegalMoveHelper(int color, int[] pos, int dir, int [] B){
 		int[] nextPos = new int[2];
 		int nextColor;
-		
+
+		System.out.println("Entered helper function for pos: "+pos[0]+","+pos[1]);
+
 		nextPos = getNextPos(pos,dir);
 		
 		/*Check off the board*/
@@ -169,10 +193,13 @@ public class AI {
 
 		nextColor = B[rcToOneD(nextPos[0],nextPos[1])];
 		
-		if(nextColor == color)
-			return true;
-		else if(nextColor == 0)
+		if(pos[0] == 3 && pos[1] == 4)
+		    System.out.println("Next color for 3,4 = " + nextColor + "nextPos = " + nextPos[0] + "," + nextPos[1]);
+
+		if(nextColor == 0)
 			return false;
+		else if(nextColor == color)
+			return true;
 		else
 			return(isLegalMoveHelper(color,nextPos,dir, B));
 	}
@@ -255,12 +282,49 @@ public class AI {
 			System.out.println();
 		}
 	}
-	
+
+    /* Prints the board with the given moves highlighted*/
+    public void printBoardHighlightMoves( ArrayList<int[]> moves ){
+	int[] thisMove = new int[2];
+
+	for( int i = 0; i < 8; i ++ ){
+	    for( int j = 0; j < 8; j ++ )
+		{
+		    thisMove[0] = i;
+		    thisMove[1] = j;
+		    if( containsMove( moves, thisMove ) )
+			System.out.print("O ");
+		    else
+			System.out.print("X ");
+		}
+	System.out.print("\n");
+    }
+    }
 	public void printMove(int[] m){
 		System.out.println("("+m[0]+","+m[1]+")");
 	}
-	public static void main(String[] args) {
+
+    public boolean containsMove( ArrayList<int[]> arr, int[] move )
+    {
+	for(int i = 0; i < arr.size(); i++)
+	    if( arr.get(i)[0] == move[0] && arr.get(i)[1] == move[1])
+		return true;
+
+	return false;
+    }
+
+       public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		AI r = new AI();
+                r.printBoard(r.Board);
+                System.out.println("Built");
+
+
+                ArrayList<int[]> legalMoves = r.findAllLegalMoves(1,r.Board);
+		r.printBoardHighlightMoves( legalMoves );
+                for(int i = 0; i < legalMoves.size(); i ++){
+                        r.printMove(legalMoves.get(i));
+                }
 
 	}
 
