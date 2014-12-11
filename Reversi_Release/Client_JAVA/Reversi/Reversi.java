@@ -71,13 +71,35 @@ public class Reversi {
 	/*Flood fills from position (3,3) to find all spaces where a legal move could even happen*/
 	public ArrayList<int[]> findAllMovableSpaces(int[] B){
 		int[] initPos = {3,3};
-		
-	/*	ArrayList<int[]> returnMe = new ArrayList<int[]>();
+			
+		ArrayList<int[]> returnMe = new ArrayList<int[]>();
+		/*
 		ArrayList<int[]> checkedList = new ArrayList<int[]>();
 		returnMe.addAll(findAllMovableSpacesHelper(initPos, B, checkedList));
 
 		return returnMe;*/
-	
+		int[] pos = {0,0};
+		
+		for(int i = 0; i < 8; i ++)
+			for( int j = 0; j < 8; j++){
+				pos[0] = i;
+				pos[1] = j;
+				
+				/*Check all neighboring spaces*/
+				for(int k = 0; k < 8; k++){
+					int[] nextPos = new int[2];
+					nextPos = getNextPos(pos, k);
+					if(!isOffBoard(nextPos)){
+						if(B[rcToOneD(nextPos[0],nextPos[1])] != 0){
+							returnMe.add(nextPos);
+							continue;
+						}
+					}
+				}
+			}
+		
+		return returnMe;
+		
 		
 	}
 	
