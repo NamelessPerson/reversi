@@ -8,7 +8,7 @@ public class Reversi {
 	JPanel canvas;
 	
 	Reversi(){
-		board = new Board(null);
+		board = new Board("B0000000000000000000000000002100000012000000000000000000000000000");
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(600, 600);
@@ -37,19 +37,20 @@ public class Reversi {
 				if(i == 0) localGameHuman();
 				if(i == 1) localGameAI();
 			}
-			System.exit(0);
+			
 			Thread.sleep(1);
 		}
 	}
 	
 	private void localGameAI() {
-		// TODO Auto-generated method stub
-		
+		while(board.isPlayable()){
+			
+		}
+		System.exit(0);
 	}
 
 	private void localGameHuman() {
-		// TODO Auto-generated method stub
-		
+		System.exit(0);
 	}
 
 	public static void main(String[] args) throws InterruptedException {

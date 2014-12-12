@@ -34,8 +34,8 @@ public class BoardCanvas extends JPanel{
 	}
 
 	private void paintPieces(Graphics g, Board board) {
-		ArrayList<Board.Piece> list = board.getPieces();
-		for(Board.Piece p : list){
+		ArrayList<Piece> list = board.getPieces();
+		for(Piece p : list){
 			
 			if(p.color) g.setColor(Color.WHITE);
 			else g.setColor(Color.BLACK);
