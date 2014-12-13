@@ -37,4 +37,17 @@ public class Board {
 		}
 		return false;
 	}
+	public String makeMove(int x, int y, boolean color){
+		return "";
+	}
+
+	public boolean hasMove(boolean color) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	public boolean makeMove(String input) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
