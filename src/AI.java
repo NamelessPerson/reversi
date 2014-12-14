@@ -181,9 +181,7 @@ public class AI {
 				indexOfMax = i;
 			}
 		}
-		
-		System.out.println("Selected move: " +availableMoves.get(indexOfMax).x+","+availableMoves.get(indexOfMax).y);
-		
+				
 		return availableMoves.get(indexOfMax);
 	}
 
@@ -199,16 +197,5 @@ public class AI {
 	public String makeMove(Board b){
 		return makeMove(b, this.color);
 	}
-
-   /* public static void main(String[] args) {
-		AI r = new AI(true);
-		Board b = new Board("B0000000000000000000000000002100000012000000000000000000000000000");
-		
-		//for(Piece p : r.findAllLegalMoves(b, false))
-		//	System.out.println(p.x+" "+p.y+" "+p.color);
-		System.out.println(r.evaluateBoard(b, true));
-		
-
-	}*/
 
 }
