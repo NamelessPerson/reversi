@@ -116,17 +116,18 @@ public class AI {
 	}
 	
 	/*This recursively extends a move until it hits the search depth or minimum happiness*/
-	public int extendMoves(Piece p, Board b, boolean color, boolean origColor, int depth, int minHappiness){
+	public int extendMoves(Piece p, Board b, boolean color, boolean origColor, long startTime, int minHappiness){
 		
-		/*Create a board with move p in it*/
-		Board newBoard = b.makeMoveInNewBoard(p.x, p.y, color);
+		b.makeMove("M"+String.valueOf(p.x)+String.valueOf(p.y), color);
 		
 		/*Base case, if this is the bottom, stop*/
-		int currentHappiness = evaluateBoard(newBoard, origColor);
-		if(depth == 0 || currentHappiness < minHappiness)
+		int currentHappiness = evaluateBoard(b, origColor);
+		long timeNow = System.currentTimeMillis();
+		
+		if(timeNow - startTime > 8000 || currentHappiness < minHappiness)
 			return currentHappiness;
 		
-		ArrayList<Piece> newBoardMoves = newBoard.findAllLegalMoves(!color); //Find every possible next
+		ArrayList<Piece> newBoardMoves = b.findAllLegalMoves(!color); //Find every possible next
 		//move that the opponent might make.
 		
 		/*If there are no legal moves, return -1*/
@@ -140,7 +141,8 @@ public class AI {
 		
 		/*For each possible next move, recursively call this function.*/
 		for(int i = 0; i < newBoardMoves.size(); i ++){
-			newBoardScores[i] = extendMoves(newBoardMoves.get(i), newBoard, !color, origColor, depth-1, minHappiness);
+			Board newBoard = new Board(b.boardState);
+			newBoardScores[i] = extendMoves(newBoardMoves.get(i), newBoard, !color, origColor, startTime, minHappiness);
 			if(color == origColor)
 				if(max < newBoardScores[i])
 					max = newBoardScores[i];
@@ -172,12 +174,15 @@ public class AI {
 		int indexOfMax = 0;
 		
 		for(int i = 0; i< availableMoves.size(); i ++){
-			boardScores[i] = extendMoves(availableMoves.get(i), b, !color, color, 1, 10);
+			Board newBoard = new Board(b.boardState);
+			boardScores[i] = extendMoves(availableMoves.get(i), newBoard, !color, color, 5, 10);
 			if(boardScores[i] > max){
 				max = boardScores[i];
 				indexOfMax = i;
 			}
 		}
+		
+		System.out.println("Selected move: " +availableMoves.get(indexOfMax).x+","+availableMoves.get(indexOfMax).y);
 		
 		return availableMoves.get(indexOfMax);
 	}

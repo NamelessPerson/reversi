@@ -62,7 +62,7 @@ public class Board implements Cloneable{
 	
 	public boolean makeMove(int x, int y, boolean color){
 		if(!isLegalMove(x, y, color)) return false;
-		System.out.println("Is Legal Move");
+		System.out.println("("+x+","+y+") Is Legal Move");				
 		
 		short c = 2;
 		if(color) c = 1;
@@ -95,23 +95,25 @@ public class Board implements Cloneable{
 		return !findAllLegalMoves(color).isEmpty();
 	}
 
+	/*
 	public Board makeMoveInNewBoard(int x, int y, boolean color){
 		Board rtn = null;
 		try {
 			rtn = (Board) this.clone();
 			rtn.makeMove(x, y, color);
+			System.out.println("Making move: "+x+","+y+" in new board");
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return rtn;
-	}
-	/*
+	}*/
+	
 	public Board makeMoveInNewBoard(int x, int y, boolean color){
 		Board returnMe = new Board(this.boardState);
 		returnMe.makeMove(x,y,color);
 		return returnMe;
-	}*/
+	}
 	
 	public ArrayList<Piece> findAllLegalMoves(boolean color){
 		ArrayList<Piece> rtn = new ArrayList<Piece>();
