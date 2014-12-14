@@ -23,7 +23,6 @@ public class Reversi {
 	}
 	
 	void run() throws InterruptedException{
-		//String i = JOptionPane.showInputDialog(canvas, "Online or local?", JOptionPane.PLAIN_MESSAGE);
 		String[] options = {"Yes","No"};
 		String[] options2 = {"Human","AI"};
 		while(true){
@@ -43,10 +42,20 @@ public class Reversi {
 	}
 	
 	private void localGameAI() {
+		AI ai = new AI(false);
+		board = new Board("B0000000000000000000000000002100000012000000000000000000000000000");
 		while(board.isPlayable()){
-			
+			if(board.hasMove(true)){
+				while(!board.makeMove(getInput()));
+			}
+			if(board.hasMove(false)) board.makeMove(ai.makeMove(board));
 		}
 		System.exit(0);
+	}
+
+	private String getInput() {
+		// TODO Auto-generated method stub
+		return "";
 	}
 
 	private void localGameHuman() {
