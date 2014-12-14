@@ -5,7 +5,9 @@ import javax.swing.*;
 public class Reversi {
 	
 	public static Board board;
-	JPanel canvas;
+	public static int inputX;
+	public static int inputY;
+	BoardCanvas canvas;
 	
 	Reversi(){
 		board = new Board("B0000000000000000000000000002100000012000000000000000000000000000");
@@ -23,11 +25,10 @@ public class Reversi {
 	}
 	
 	void run() throws InterruptedException{
-		String[] options = {"Yes","No"};
+		String[] options = {"Online","Local"};
 		String[] options2 = {"Human","AI"};
 		while(true){
-			int i = JOptionPane.showOptionDialog(canvas, "Would you like to play online?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "");
-			System.out.println(i);
+			int i = JOptionPane.showOptionDialog(canvas, "Would you like to play online or locally?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "");
 			if(i == 0){
 				
 			}
@@ -46,16 +47,24 @@ public class Reversi {
 		board = new Board("B0000000000000000000000000002100000012000000000000000000000000000");
 		while(board.isPlayable()){
 			if(board.hasMove(true)){
-				while(!board.makeMove(getInput()));
+				while(!board.makeMove(getInput(), true));
 			}
-			if(board.hasMove(false)) board.makeMove(ai.makeMove(board));
+			if(board.hasMove(false)) board.makeMove(ai.makeMove(board), false);
 		}
 		System.exit(0);
 	}
 
 	private String getInput() {
-		// TODO Auto-generated method stub
-		return "";
+		canvas.getInput();
+		while(inputX < 0 && inputY < 0){
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return "M"+String.valueOf(inputX)+String.valueOf(inputY);
 	}
 
 	private void localGameHuman() {
