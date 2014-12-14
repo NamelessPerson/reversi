@@ -24,6 +24,7 @@ public class AI {
 	 * 
 	 */
 	public static boolean isLegalMove(int x, int y, boolean color, Board b){
+		if(b.getPosition(x,y) != 0 ) return false;
 		for(int i = -1; i < 2; i++){
 			for(int j = -1; j < 2; j++){
 				if(b.getPosition(x+i,y+j) > 0){
@@ -52,7 +53,7 @@ public class AI {
 		return makeMove(b, this.color);
 	}
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 		AI r = new AI(true);
 		Board b = new Board("B0000000000000000000000000002100000012000000000000000000000000000");
 		
@@ -60,6 +61,6 @@ public class AI {
 			System.out.println(p.x+" "+p.y+" "+p.color);
 		
 
-	}
+	}*/
 
 }
