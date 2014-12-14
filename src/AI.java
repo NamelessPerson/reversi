@@ -120,15 +120,12 @@ public class AI {
 	}
 
 	public String makeMove(Board b, boolean color){
-<<<<<<< HEAD
 		Piece p = b.findAllLegalMoves(color).get(0);
-=======
 		/*Find all legal moves*/
 		ArrayList<Piece> moves = b.findAllLegalMoves(color);
 		
-		Piece p = selectMove(moves, b, color);
+		p = selectMove(moves, b, color);
 		
->>>>>>> f8f6e4bb2910da5c868a6dc77f5e70c48b64ab2d
 		return "M"+String.valueOf(p.x)+String.valueOf(p.y);
 	}
 	public String makeMove(Board b){

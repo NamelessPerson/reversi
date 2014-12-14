@@ -120,7 +120,7 @@ public class Reversi {
 			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			//socket output
 		   	out = new PrintWriter(s.getOutputStream());
-		   	out.println(team);
+		   	out.println("N"+team);
 		   	out.flush();
 		   	
 		   	String msg = "";
