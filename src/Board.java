@@ -13,8 +13,8 @@ public class Board {
 	public ArrayList<Piece> getPieces(){
 		ArrayList<Piece> rtn = new ArrayList<Piece>();
 		for(int i = 0; i<64; i++){
-			if(boardState[i] == 1) rtn.add(new Piece(i%8, i/8, true));
-			if(boardState[i] == 2) rtn.add(new Piece(i%8, i/8, false));
+			if(boardState[i] == 1) rtn.add(new Piece(i/8, i%8, true));
+			if(boardState[i] == 2) rtn.add(new Piece(i/8, i%8, false));
 		}
 		return rtn;
 	}
@@ -38,6 +38,7 @@ public class Board {
 		return false;
 	}
 	public boolean makeMove(int x, int y, boolean color){
+		if(!AI.isLegalMove(x, y, color, this)) return false;
 		if(color) boardState[8*x + y] = 1;
 		else boardState[8*x + y] = 2;
 		return true;
@@ -49,6 +50,7 @@ public class Board {
 	}
 
 	public boolean makeMove(String input, boolean color) {
+		System.out.println(input);
 		return makeMove(Integer.valueOf(input.substring(1,2)),Integer.valueOf(input.substring(2,3)),color);
 	}
 }

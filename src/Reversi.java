@@ -50,6 +50,7 @@ public class Reversi {
 				while(!board.makeMove(getInput(), true));
 			}
 			if(board.hasMove(false)) board.makeMove(ai.makeMove(board), false);
+			canvas.repaint();
 		}
 		System.exit(0);
 	}
