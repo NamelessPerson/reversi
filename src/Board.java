@@ -10,6 +10,13 @@ public class Board implements Cloneable{
 		}
 	}
 	
+	public Board(short[] boardState){
+		this.boardState = new short[64];
+		for(int i = 0; i < 64; i++){
+			this.boardState[i] = boardState[i];
+		}
+	}
+	
 	public void updateBoard(String boardState) {
 		if(boardState.substring(0,1) != "B"){
 			System.out.println("Incorrect board format: "+boardState);
@@ -99,6 +106,12 @@ public class Board implements Cloneable{
 		}
 		return rtn;
 	}
+	/*
+	public Board makeMoveInNewBoard(int x, int y, boolean color){
+		Board returnMe = new Board(this.boardState);
+		returnMe.makeMove(x,y,color);
+		return returnMe;
+	}*/
 	
 	public ArrayList<Piece> findAllLegalMoves(boolean color){
 		ArrayList<Piece> rtn = new ArrayList<Piece>();

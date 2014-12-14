@@ -18,6 +18,7 @@ public class AI {
 		int nPieces = 0;
 		int totalPieces = 0;
 		
+		
 		/* 1 = white, 2 = black. true = white, false = black*/
 		for(int i = 0; i < 8; i ++){
 			for(int j = 0; j < 8; j ++){
@@ -34,8 +35,24 @@ public class AI {
 			}
 		}
 		
+		/*Check win conditions, losing board means -1*/
+		
 		/*Just straight up count how many legal moves there are*/
 		mobility = (b.findAllLegalMoves(color)).size();
+		
+		/* Zero legal moves, is this win or lose?*/
+		if(mobility == 0){
+			if(b.findAllLegalMoves(!color).size() >0)
+				return -1; //This is a losing board.
+			else{
+				//Check who won.
+				if(2*nPieces > totalPieces) // More of ours than theirs
+					return 1000000;
+				else
+					return -1;
+			}
+				
+		}
 		
 		return mobility + tileValues + 20*(nPieces/totalPieces);
 	}
@@ -112,6 +129,10 @@ public class AI {
 		ArrayList<Piece> newBoardMoves = newBoard.findAllLegalMoves(!color); //Find every possible next
 		//move that the opponent might make.
 		
+		/*If there are no legal moves, return -1*/
+		if(newBoardMoves.size() == 0)
+			return -1;
+		
 		int[] newBoardScores = new int[newBoardMoves.size()];
 		
 		int max = 0;
@@ -124,6 +145,8 @@ public class AI {
 				if(max < newBoardScores[i])
 					max = newBoardScores[i];
 		}
+	
+		
 		
 		if(color != origColor){
 			min = newBoardScores[0];
@@ -149,7 +172,7 @@ public class AI {
 		int indexOfMax = 0;
 		
 		for(int i = 0; i< availableMoves.size(); i ++){
-			boardScores[i] = extendMoves(availableMoves.get(i), b, !color, color, 5, 5);
+			boardScores[i] = extendMoves(availableMoves.get(i), b, !color, color, 1, 10);
 			if(boardScores[i] > max){
 				max = boardScores[i];
 				indexOfMax = i;
