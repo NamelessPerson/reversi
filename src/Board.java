@@ -38,9 +38,21 @@ public class Board {
 		return false;
 	}
 	public boolean makeMove(int x, int y, boolean color){
-		if(isLegalMove(x, y, color, this)) return false;
-		if(color) boardState[8*x + y] = 1;
-		else boardState[8*x + y] = 2;
+		if(isLegalMove(x, y, color)) return false;
+		
+		int c = 2;
+		if(color) c = 1;
+		
+		for(int i = -1; i < 2; i++){
+			for(int j = -1; j < 2; j++){
+				if(getPosition(x+i,y+j) > 0){
+					if(getColor(x+i, y+j) != color){
+						if(!(i == 0 && j == 0) && isLegalMoveHelper(x+i,y+j,i,j,color))return true;
+					}
+				}
+			}
+		}
+		
 		return true;
 	}
 
@@ -66,21 +78,21 @@ public class Board {
 		return rtn;
 	}
 	
-	public ArrayList<Piece> findAllLegalMoves(Board b, boolean color){
+	public ArrayList<Piece> findAllLegalMoves(boolean color){
 		ArrayList<Piece> rtn = new ArrayList<Piece>();
 		for(int x = 0; x < 8; x++)
 			for(int y = 0; y <8; y++)
-				if(isLegalMove(x, y, color, b))rtn.add(new Piece(x, y, color));
+				if(isLegalMove(x, y, color))rtn.add(new Piece(x, y, color));
 		return rtn;
 	}
 	
-	public boolean isLegalMove(int x, int y, boolean color, Board b){
-		if(b.getPosition(x,y) != 0 ) return false;
+	public boolean isLegalMove(int x, int y, boolean color){
+		if(getPosition(x,y) != 0 ) return false;
 		for(int i = -1; i < 2; i++){
 			for(int j = -1; j < 2; j++){
-				if(b.getPosition(x+i,y+j) > 0){
-					if(b.getColor(x+i, y+j) != color){
-						if(!(i == 0 && j == 0) && isLegalMoveHelper(x+i,y+j,i,j,color,b))return true;
+				if(getPosition(x+i,y+j) > 0){
+					if(getColor(x+i, y+j) != color){
+						if(!(i == 0 && j == 0) && isLegalMoveHelper(x+i,y+j,i,j,color))return true;
 					}
 				}
 			}
@@ -90,9 +102,9 @@ public class Board {
 	
 	
 	private boolean isLegalMoveHelper(int x, int y, int i, int j,
-			boolean color, Board b) {
-		if(b.getPosition(x+i, y+j) < 1) return false;
-		if(b.getColor(x+i, y+j) == color) return true;
-		else return isLegalMoveHelper(x+i,y+j,i,j,color,b);
+			boolean color) {
+		if(getPosition(x+i, y+j) < 1) return false;
+		if(getColor(x+i, y+j) == color) return true;
+		else return isLegalMoveHelper(x+i,y+j,i,j,color);
 	}
 }
