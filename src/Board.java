@@ -10,6 +10,17 @@ public class Board {
 		}
 	}
 	
+	public void updateBoard(String boardState) {
+		if(boardState.substring(0,1) != "B"){
+			System.out.println("Incorrect board format: "+boardState);
+			return;
+		}
+		
+		for(int i = 0; i < 64; i++){
+			this.boardState[i] = Short.decode(boardState.substring(i+1, i+2));
+		}
+	}
+	
 	public ArrayList<Piece> getPieces(){
 		ArrayList<Piece> rtn = new ArrayList<Piece>();
 		for(int i = 0; i<64; i++){
@@ -20,8 +31,7 @@ public class Board {
 	}
 
 	public boolean isPlayable() {
-		// TODO Auto-generated method stub
-		return true;
+		return !(findAllLegalMoves(true).isEmpty() && findAllLegalMoves(false).isEmpty());
 	}
 
 	public int getPosition(int x, int y) {
@@ -32,40 +42,52 @@ public class Board {
 	}
 	
 	public boolean getColor(int x, int y) {
-		if(x > 0 && x < 8 && y > 0 && y <8 ){
+		if(x >= 0 && x < 8 && y >= 0 && y <8 ){
 			if(boardState[8*x + y] == 1) return true;
 		}
 		return false;
 	}
+	
+	public boolean makeMove(String input, boolean color) {
+		System.out.println(input);
+		return makeMove(Integer.valueOf(input.substring(1,2)),Integer.valueOf(input.substring(2,3)),color);
+	}
+	
 	public boolean makeMove(int x, int y, boolean color){
-		if(isLegalMove(x, y, color)) return false;
+		if(!isLegalMove(x, y, color)) return false;
+		System.out.println("Is Legal Move");
 		
-		int c = 2;
+		short c = 2;
 		if(color) c = 1;
 		
 		for(int i = -1; i < 2; i++){
 			for(int j = -1; j < 2; j++){
-				if(getPosition(x+i,y+j) > 0){
-					if(getColor(x+i, y+j) != color){
-						if(!(i == 0 && j == 0) && isLegalMoveHelper(x+i,y+j,i,j,color))return true;
-					}
+				if(getPosition(x+i,y+j) > 0 && getPosition(x+i,y+j) != c && !(i == 0 && j == 0)){
+					if(makeMoveHelper(x+i,y+j,i,j,c))boardState[8*x + y] = c;
 				}
 			}
 		}
 		
 		return true;
 	}
+	
+	private boolean makeMoveHelper(int x, int y, int i, int j,
+			short color) {
+		boolean b;
+		if(getPosition(x+i, y+j) < 1) return false;
+		if(getPosition(x+i, y+j) == color){
+			boardState[8*x + y] = color;
+			return true;
+		}
+		b = makeMoveHelper(x+i,y+j,i,j,color);
+		if(b) boardState[8*x + y] = color;
+		return b;
+	}
 
 	public boolean hasMove(boolean color) {
-		// TODO Auto-generated method stub
-		return true;
+		return !findAllLegalMoves(color).isEmpty();
 	}
 
-	public boolean makeMove(String input, boolean color) {
-		System.out.println(input);
-		return makeMove(Integer.valueOf(input.substring(1,2)),Integer.valueOf(input.substring(2,3)),color);
-	}
-	
 	public Board makeMoveInNewBoard(int x, int y, boolean color){
 		Board rtn = null;
 		try {
@@ -103,8 +125,18 @@ public class Board {
 	
 	private boolean isLegalMoveHelper(int x, int y, int i, int j,
 			boolean color) {
-		if(getPosition(x+i, y+j) < 1) return false;
-		if(getColor(x+i, y+j) == color) return true;
+		if(getPosition(x+i, y+j) < 1)return false;
+		if(getColor(x+i, y+j) == color)return true;
 		else return isLegalMoveHelper(x+i,y+j,i,j,color);
 	}
+
+	public Piece winner() {
+		Piece rtn = new Piece(0,0,true);
+		for(Piece p : getPieces()){
+			if(p.color) rtn.x++;
+			else rtn.y++;
+		}
+		return rtn;
+	}
+
 }

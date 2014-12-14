@@ -34,8 +34,7 @@ public class ReversiClient
 		
 		
 		Socket s;
-		try
-		{
+		try{
 			s = new Socket(IP,port);
 		
 			//socket input
@@ -54,8 +53,7 @@ public class ReversiClient
 			send.start();
 			receive.start();
 		}
-		catch(Exception e)
-		{
+		catch(Exception e){
 			e.printStackTrace();
 		}
 	}

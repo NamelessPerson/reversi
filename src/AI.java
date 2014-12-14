@@ -9,7 +9,7 @@ public class AI {
 	}
 
 	public String makeMove(Board b, boolean color){
-		Piece p = b.findAllLegalMoves(b, color).get(0);
+		Piece p = b.findAllLegalMoves(color).get(0);
 		return "M"+String.valueOf(p.x)+String.valueOf(p.y);
 	}
 	public String makeMove(Board b){
