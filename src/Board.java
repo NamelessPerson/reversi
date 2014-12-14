@@ -37,8 +37,10 @@ public class Board {
 		}
 		return false;
 	}
-	public String makeMove(int x, int y, boolean color){
-		return "";
+	public boolean makeMove(int x, int y, boolean color){
+		if(color) boardState[8*x + y] = 1;
+		else boardState[8*x + y] = 2;
+		return true;
 	}
 
 	public boolean hasMove(boolean color) {
@@ -46,8 +48,7 @@ public class Board {
 		return true;
 	}
 
-	public boolean makeMove(String input) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean makeMove(String input, boolean color) {
+		return makeMove(Integer.valueOf(input.substring(1,2)),Integer.valueOf(input.substring(2,3)),color);
 	}
 }

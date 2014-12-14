@@ -45,7 +45,8 @@ public class AI {
 	}
 
 	public String makeMove(Board b, boolean color){
-		return "";
+		Piece p = findAllLegalMoves(b, color).get(0);
+		return "M"+String.valueOf(p.x)+String.valueOf(p.y);
 	}
 	public String makeMove(Board b){
 		return makeMove(b, this.color);
