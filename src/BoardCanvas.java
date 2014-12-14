@@ -20,23 +20,23 @@ public class BoardCanvas extends JPanel{
 		
 		int i = this.getWidth()/8;
 		
-		g.drawLine(i, 	0, i, 	600);
-		g.drawLine(i*2, 0, i*2, 600);
-		g.drawLine(i*3, 0, i*3, 600);
-		g.drawLine(i*4, 0, i*4, 600);
-		g.drawLine(i*5, 0, i*5, 600);
-		g.drawLine(i*6, 0, i*6, 600);
-		g.drawLine(i*7, 0, i*7, 600);
+		g.drawLine(i, 	0, i, 	this.getHeight());
+		g.drawLine(i*2, 0, i*2, this.getHeight());
+		g.drawLine(i*3, 0, i*3, this.getHeight());
+		g.drawLine(i*4, 0, i*4, this.getHeight());
+		g.drawLine(i*5, 0, i*5, this.getHeight());
+		g.drawLine(i*6, 0, i*6, this.getHeight());
+		g.drawLine(i*7, 0, i*7, this.getHeight());
 		
 		i = this.getHeight()/8;
 		
-		g.drawLine(0, i,   600, i);
-		g.drawLine(0, i*2, 600, i*2);
-		g.drawLine(0, i*3, 600, i*3);
-		g.drawLine(0, i*4, 600, i*4);
-		g.drawLine(0, i*5, 600, i*5);
-		g.drawLine(0, i*6, 600, i*6);
-		g.drawLine(0, i*7, 600, i*7);
+		g.drawLine(0, i,   this.getWidth(), i);
+		g.drawLine(0, i*2, this.getWidth(), i*2);
+		g.drawLine(0, i*3, this.getWidth(), i*3);
+		g.drawLine(0, i*4, this.getWidth(), i*4);
+		g.drawLine(0, i*5, this.getWidth(), i*5);
+		g.drawLine(0, i*6, this.getWidth(), i*6);
+		g.drawLine(0, i*7, this.getWidth(), i*7);
 		
 		paintPieces(g, Reversi.board);
 	}
