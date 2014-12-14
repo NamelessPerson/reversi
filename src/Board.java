@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 
-public class Board {
+public class Board implements Cloneable{
 	short[] boardState;
 	public Board(String boardState){
 		this.boardState = new short[64];

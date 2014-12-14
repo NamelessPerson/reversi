@@ -100,9 +100,42 @@ public class AI {
 	
 	/*This recursively extends a move until it hits the search depth or minimum happiness*/
 	public int extendMoves(Piece p, Board b, boolean color, boolean origColor, int depth, int minHappiness){
-		//Board newBoard = b.makeMoveInNewBoard(p.x, p.y, color);
 		
-		return 0;
+		/*Create a board with move p in it*/
+		Board newBoard = b.makeMoveInNewBoard(p.x, p.y, color);
+		
+		/*Base case, if this is the bottom, stop*/
+		int currentHappiness = evaluateBoard(newBoard, origColor);
+		if(depth == 0 || currentHappiness < minHappiness)
+			return currentHappiness;
+		
+		ArrayList<Piece> newBoardMoves = newBoard.findAllLegalMoves(!color); //Find every possible next
+		//move that the opponent might make.
+		
+		int[] newBoardScores = new int[newBoardMoves.size()];
+		
+		int max = 0;
+		int min = 0;
+		
+		/*For each possible next move, recursively call this function.*/
+		for(int i = 0; i < newBoardMoves.size(); i ++){
+			newBoardScores[i] = extendMoves(newBoardMoves.get(i), newBoard, !color, origColor, depth-1, minHappiness);
+			if(color == origColor)
+				if(max < newBoardScores[i])
+					max = newBoardScores[i];
+		}
+		
+		if(color != origColor){
+			min = newBoardScores[0];
+			for(int i = 1; i < newBoardMoves.size(); i ++)
+				if( min > newBoardScores[i])
+					min = newBoardScores[i];
+		}
+			
+		if(color == origColor)
+			return max;
+		else
+			return min;
 	}
 	
 	/* This function returns the move that you ought to make
@@ -112,11 +145,18 @@ public class AI {
 	public Piece selectMove(ArrayList<Piece> availableMoves, Board b, boolean color){
 		int[] boardScores = new int[availableMoves.size()];
 
+		int max = 0;
+		int indexOfMax = 0;
+		
 		for(int i = 0; i< availableMoves.size(); i ++){
-			boardScores[i] = extendMoves(availableMoves.get(i), b, color, !color, 5, 5);
+			boardScores[i] = extendMoves(availableMoves.get(i), b, !color, color, 5, 5);
+			if(boardScores[i] > max){
+				max = boardScores[i];
+				indexOfMax = i;
+			}
 		}
 		
-		return availableMoves.get(0);
+		return availableMoves.get(indexOfMax);
 	}
 
 	public String makeMove(Board b, boolean color){
