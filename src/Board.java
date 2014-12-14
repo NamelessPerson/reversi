@@ -53,4 +53,16 @@ public class Board {
 		System.out.println(input);
 		return makeMove(Integer.valueOf(input.substring(1,2)),Integer.valueOf(input.substring(2,3)),color);
 	}
+	
+	public Board makeMoveInNewBoard(int x, int y, boolean color){
+		Board rtn = null;
+		try {
+			rtn = (Board) this.clone();
+			rtn.makeMove(x, y, color);
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rtn;
+	}
 }
