@@ -108,6 +108,8 @@ public class Reversi {
 		Socket s;
 		BufferedReader in;
 		PrintWriter out;
+		String msg = "";
+		int i=0;
 		
 		String IP = JOptionPane.showInputDialog(canvas, "Please input the IP", "IP", JOptionPane.PLAIN_MESSAGE);
 		int port = Integer.valueOf(JOptionPane.showInputDialog(canvas, "Please input the Port number", "Port", JOptionPane.PLAIN_MESSAGE));
@@ -123,33 +125,94 @@ public class Reversi {
 		   	out.println("N"+team);
 		   	out.flush();
 		   	
-		   	String msg = "";
+		   	
 		   	do{
 		   		msg = in.readLine();
 		   		System.out.println(msg);
 		   		if(!msg.isEmpty()){
-		   			if(msg == "U0")ai = new AI(true);
-		   			else if(msg == "U1")ai = new AI(false);
-		   			else if(msg == "W1")System.out.println("You win");
-		   			else if(msg == "W0")System.out.println("You lose");
-		   			else if(msg == "W2")System.out.println("You draw");
-		   			
-		   			else{
+		   			if(msg.equals("U0"))ai = new AI(true);
+		   			else if(msg.equals("U1"))ai = new AI(false);
+		   			else if(msg.equals("W1"))i = 1;
+		   			else if(msg.equals("W0"))i = 0;
+		   			else if(msg.equals("W2"))i = 2;
+		   			else if(msg.substring(0,1).equals("B")){
 		   				board.updateBoard(msg);
 			   			canvas.repaint();
 			   			out.println(ai.makeMove(board));
 			   			out.flush();
 		   			}
+		   			else if(!msg.equals("G")) System.out.println("Unrecognized message :"+msg);
 		   		}
-		   	}while(msg != "G");
+		   	}while(!msg.equals("G"));
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		if(i == 1) msg = "Win";
+		if(i == 0) msg = "Lose";
+		if(i == 2) msg = "Draw";
+		
+		String[] options = {"Yes","No"};
+		i = JOptionPane.showOptionDialog(canvas, "You "+msg+"! Would you like to play again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+		if(i == 1 || i == -1) System.exit(0);
 	}
 	
 	private void serverGameHuman(){
+		boolean color = true;
+		Socket s;
+		BufferedReader in;
+		PrintWriter out;
+		String msg = "";
+		int i=-1;
 		
+		String IP = JOptionPane.showInputDialog(canvas, "Please input the IP", "IP", JOptionPane.PLAIN_MESSAGE);
+		int port = Integer.valueOf(JOptionPane.showInputDialog(canvas, "Please input the Port number", "Port", JOptionPane.PLAIN_MESSAGE));
+		String team = JOptionPane.showInputDialog(canvas, "Please input your team name", "Team", JOptionPane.PLAIN_MESSAGE);
+		System.out.println("Connecting to "+IP+":"+port);
+		
+		try{
+			s = new Socket(IP,port);
+			//socket input
+			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			//socket output
+		   	out = new PrintWriter(s.getOutputStream());
+		   	out.println("N"+team);
+		   	out.flush();
+		   	
+		   	
+		   	do{
+		   		msg = in.readLine();
+		   		System.out.println(msg);
+		   		if(!msg.isEmpty()){
+		   			if(msg.equals("U0"))color = true;
+		   			else if(msg.equals("U1"))color = false;
+		   			else if(msg.equals("W1"))i = 1;
+		   			else if(msg.equals("W0"))i = 0;
+		   			else if(msg.equals("W2"))i = 2;
+		   			else if(msg.substring(0,1).equals("B")){
+		   				board.updateBoard(msg);
+			   			canvas.repaint();
+			   			String move = getInput();
+			   			while(!board.isLegalMove(move, color)) move = getInput();
+			   			board.makeMove(move, color);
+			   			out.println(getInput());
+			   			out.flush();
+		   			}
+		   			else if(!msg.equals("G")) System.out.println("Unrecognized message :"+msg);
+		   		}
+		   	}while(!msg.equals("G"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		if(i == 1) msg = "Win";
+		if(i == 0) msg = "Lose";
+		if(i == 2) msg = "Draw";
+		if(i == -1) msg = "Lost Connection!";
+		
+		String[] options = {"Yes","No"};
+		i = JOptionPane.showOptionDialog(canvas, "You "+msg+"! Would you like to play again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+		if(i == 1 || i == -1) System.exit(0);
 	}
 	
 	private String getInput() throws InterruptedException {

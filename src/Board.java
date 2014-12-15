@@ -18,7 +18,7 @@ public class Board implements Cloneable{
 	}
 	
 	public void updateBoard(String boardState) {
-		if(boardState.substring(0,1) != "B"){
+		if(!boardState.substring(0,1).equals("B")){
 			System.out.println("Incorrect board format: "+boardState);
 			return;
 		}
@@ -98,6 +98,10 @@ public class Board implements Cloneable{
 			for(int y = 0; y <8; y++)
 				if(isLegalMove(x, y, color))rtn.add(new Piece(x, y, color));
 		return rtn;
+	}
+	
+	public boolean isLegalMove(String move, boolean color) {
+		return isLegalMove(Integer.valueOf(move.substring(1,2)),Integer.valueOf(move.substring(2,3)),color);
 	}
 	
 	public boolean isLegalMove(int x, int y, boolean color){
